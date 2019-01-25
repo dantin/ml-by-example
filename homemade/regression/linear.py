@@ -69,6 +69,12 @@ class LinearRegression():
 
         self.theta = theta
 
+    def get_cost(self, data, labels, lambda_param):
+        """Get the cost value for specific dataset."""
+        data_processed = prepare_for_training(data, self.polynomial_degree, self.sinusoid_degree, self.normalize_data)[0]
+
+        return self.cost_function(data_processed, labels, lambda_param)
+
     def cost_function(self, data, labels, lambda_param):
         """Cost function."""
         # Calculate the number of training examples and features.
@@ -87,6 +93,16 @@ class LinearRegression():
 
         # Let's extract cost value from the one and only cost numpy matrix cell.
         return cost[0][0]
+
+    def predict(self, data):
+        """Predict the output for dataset input based on trained theta values."""
+        # Normalize features and add ones column.
+        data_processed = prepare_for_training(data, self.polynomial_degree, self.sinusoid_degree, self.normalize_data)[0]
+
+        # Do predictions using model hypothesis.
+        predictions = self.hypothesis(data_processed, self.theta)
+
+        return predictions
 
     @staticmethod
     def hypothesis(data, theta):
